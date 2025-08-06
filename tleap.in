@@ -1,0 +1,41 @@
+# AmberTools leap script to generate
+# Amber prmtop and inpcrd MD files
+
+source leaprc.protein.ff14SB
+source leaprc.lipid21
+source leaprc.water.tip3p
+source leaprc.gaff
+
+loadamberparams frcmod.ions1lm_126_tip3p
+MOL = loadmol2 ligand_1.mol2
+loadamberparams ligand_1.frcmod
+
+loadoff ../../heme.lib
+loadamberparams ../../heme.frcmod
+loadamberparams ../../mcpbpy.frcmod
+
+protein = loadpdb disulfide_min_lig_1.pdb
+
+bond protein.344.CA protein.493.CB1
+bond protein.185.CA protein.493.CB
+bond protein.491.CA protein.493.C2A
+bond protein.492.CA protein.493.C3D
+
+bond protein.396.CA protein.490.CB
+bond protein.488.CA protein.490.C2A
+bond protein.489.CA protein.490.C3D
+
+bond protein.18.CA protein.487.CB
+bond protein.486.CA protein.487.C2A
+
+bond protein.266.SG protein.285.SG
+
+addions protein Na+ 0
+addions protein Cl- 0
+
+check protein
+
+setbox protein vdw
+savepdb protein new_min_disulfide_leap_lig_1.pdb
+saveamberparm protein new_min_disulfide_leap_lig_1.prmtop new_min_disulfide_leap_lig_1.rst7
+quit
